@@ -50,6 +50,8 @@ class NukeUserCommand(Component):
 
         cursor.execute('SELECT id FROM ticket WHERE reporter=%s', (username,))
         ticketids = [row[0] for row in cursor.fetchall()]
+        # XXX This is dangerous as other tables often refer to `ticket`.
+        # Check what TicketDeletePlugin does
         if ticketids:
             print "deleting tickets %s reported by %s" % (ticketids, username)
             cursor.execute("DELETE FROM ticket WHERE reporter=%s", (username,))
