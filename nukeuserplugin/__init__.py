@@ -50,17 +50,17 @@ class NukeUserCommand(Component):
 
         cursor.execute('SELECT id FROM ticket WHERE reporter=%s', (username,))
         ticketids = [row[0] for row in cursor.fetchall()]
-        # XXX This is dangerous as other tables often refer to `ticket`.
-        # Check what TicketDeletePlugin does
         if ticketids:
             print "deleting tickets %s reported by %s" % (ticketids, username)
-            cursor.execute("DELETE FROM ticket WHERE reporter=%s", (username,))
+            for id_ in ticketids:
+                Ticket(self.env, id_).delete()
         else:
             print "No tickets reported by", username
         cursor.execute("SELECT ticket,time FROM ticket_change WHERE author=%s AND field = 'comment'", (username,))
 
         comments = cursor.fetchall()
         if comments:
+            # XXX is there an API for this? can't find one.
             print "deleting comments %s by %s" % (comments, username)
             cursor.execute("DELETE FROM ticket_change WHERE author=%s AND field = 'comment'", (username,))
         else:
@@ -85,13 +85,14 @@ class NukeUserCommand(Component):
                            (username,))
             entries = [row[0] for row in cursor.fetchall()]
 
-        # ... Or not. For some reason this hangs on handler.train()
-        # no time to investigate.
-        #     print "Training and deleting spamfilter log entries %s" % entries
-        #     for entry in entries:
-        #         handler.train(fakerequest, entry, spam=True)
-        #     cursor.execute("DELETE FROM spamfilter_log WHERE author=%s",
-        #                    (username,))
+            # Bug: For some reason this hangs on handler.train(),
+            # likely upstream services being slow?
+            print "Training and deleting %d spamfilter log entries" % len(entries)
+            for entry in entries:
+                print "Training %s..." % entry
+                handler.train(fakerequest, entry, spam=True)
+            cursor.execute("DELETE FROM spamfilter_log WHERE author=%s",
+                           (username,))
 
 
         import acct_mgr.api
@@ -100,6 +101,7 @@ class NukeUserCommand(Component):
         if delete_enabled:
             account_mgr.delete_user(username)
             # XXX auth_cookie rows do not actually seem to get deleted?
+            # is there an API for this?
             cursor.execute('DELETE FROM auth_cookie WHERE name=%s', (username,))
             print "Deleted %r!" % username
         else:
