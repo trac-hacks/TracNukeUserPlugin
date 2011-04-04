@@ -2,6 +2,7 @@
 
 from trac.core import Component, implements, ExtensionPoint
 from trac.admin.api import IAdminCommandProvider
+from trac.ticket.model import Ticket
 
 class NukeUserCommand(Component):
 
