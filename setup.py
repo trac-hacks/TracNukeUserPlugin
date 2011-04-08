@@ -6,7 +6,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='NukeUserPlugin',
-    version='0.1',
+    version='0.2',
     author='Paul Winkler',
     author_email='slinkp@gmail.com',
     description = "Removes the specified user and all tickets they created",

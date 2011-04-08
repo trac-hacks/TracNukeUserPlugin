@@ -32,17 +32,21 @@ class NukeUserCommand(Component):
                (and in future, all their tickets)
         """
         complete = self._complete_username
-        yield ('nukeuser', '<userid>', help, complete, self.nuke_user)
+        yield ('nukeusers', '<userid> ...', help, complete, self.nuke_users)
 
     def _complete_username(self, args):
-        if len(args) != 1:
+        if len(args) < 1:
             return []
-        name = args[0] + '%'
+        name = args[-1] + '%'
         db = self.env.get_db_cnx()
         cursor = db.cursor()
         cursor.execute('SELECT name FROM auth_cookie WHERE name LIKE %s', (name,))
         names = [row[0] for row in cursor.fetchall()]
         return names
+
+    def nuke_users(self, *usernames):
+        for name in usernames:
+            self.nuke_user(name)
 
     def nuke_user(self, username):
         db = self.env.get_db_cnx()

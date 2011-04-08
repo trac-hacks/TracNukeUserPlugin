@@ -1,11 +1,11 @@
 This Trac plugin adds a single trac-admin command.  You use it like:
 
-``trac-admin /path/to/trac/environment/  nukeuser <username>``
+``trac-admin /path/to/trac/environment/  nukeusers <username> <username...>``
 
 (If you use it interactively, it does tab-completion of usernames from
 the auth cookie table in the database.)
 
-This will do all of the following:
+This will do all of the following for each username:
 
  * Remove the user account.
  * Delete all tickets and comments created by that user.
