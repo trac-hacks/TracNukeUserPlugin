@@ -1,3 +1,18 @@
+TracNukeUserPlugin
+==================
+
+Status
+--------
+
+I (slinkp) am currently (Sept 2012) not using Trac at all, so I'm very unlikely
+to do any more work on this, or respond to issue reports, etc.
+
+Feel free to fork this code or do anything you like with it,
+subject to the terms of the BSD license (see LICENSE.txt)
+
+About
+-------
+
 This Trac plugin adds a single trac-admin command.  You use it like:
 
 ``trac-admin /path/to/trac/environment/  nukeusers <username> <username...>``
@@ -16,8 +31,8 @@ some of it getting past SpamFilterPlugin's filters (I'm using all of
 Akismet, BlogSpam, and reCaptcha, and they still got through).  I was
 getting tired of doing cleanup manually.
 
-It does not do anything about wiki content or attachments.  Forks and
-patches welcome.
+It does not do anything about wiki content or attachments.  Forks are
+welcome.
 
-It does not provide a web UI. Forks and patches welcome :)
+It does not provide a web UI. Forks welcome :)
 
