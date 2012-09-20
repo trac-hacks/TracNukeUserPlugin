@@ -1,5 +1,5 @@
 # TracNukeUserPlugin
-# https://github.com/slinkp/tracnukeuserplugin
+# https://github.com/slinkp/TracNukeUserPlugin
 # Free software under the BSD simplified (2-clause) license.
 
 from trac.core import Component, implements, ExtensionPoint
